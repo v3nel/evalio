@@ -1,0 +1,69 @@
+name: Lignes de code
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  badge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install tokei
+        run: |
+          set -euo pipefail
+          version="12.1.2"
+          case "$(uname -m)" in
+            x86_64) target="x86_64-unknown-linux-gnu" ;;
+            aarch64) target="aarch64-unknown-linux-gnu" ;;
+            *) echo "Architecture non supportée: $(uname -m)" >&2; exit 1 ;;
+          esac
+          mkdir -p "$HOME/.local/bin"
+          curl -fsSL "https://github.com/XAMPPRocky/tokei/releases/download/v${version}/tokei-${target}.tar.gz" \
+            | tar -xz -C "$HOME/.local/bin"
+          chmod +x "$HOME/.local/bin/tokei"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/tokei" --version
+
+      - name: Count lines of code
+        id: loc
+        run: |
+          set -euo pipefail
+          code="$(tokei \
+            --output json \
+            --exclude node_modules \
+            --exclude dist \
+            --exclude build \
+            --exclude target \
+            --exclude .gradle \
+            --exclude '*.lock' \
+            --exclude bun.lock \
+            . | jq -er '.Total.code')"
+
+          loc="$(awk -v n="$code" 'BEGIN {
+            if (n >= 1000000) {
+              s = sprintf("%.1f", n / 1000000); sub(/\.0$/, "", s); printf "%sM", s
+            } else if (n >= 1000) {
+              s = sprintf("%.1f", n / 1000); sub(/\.0$/, "", s)
+              if (s + 0 >= 1000) printf "1M"; else printf "%sk", s
+            } else printf "%d", n
+          }')"
+
+          echo "Lines of code: ${code} (${loc})"
+          echo "loc=${loc}" >> "$GITHUB_OUTPUT"
+
+      - name: Update gist badge
+        uses: schneegans/dynamic-badges-action@v1.9.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ vars.LOC_GIST_ID }}
+          filename: evalio-loc.json
+          label: lignes
+          message: ${{ steps.loc.outputs.loc }}
+          color: 7C3AED
