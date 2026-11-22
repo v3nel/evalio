@@ -7,7 +7,7 @@
 Plateforme web de consultation des notes pour les étudiants du BUT Informatique — IUT Montpellier-Sète.
 
 <!-- Activité du dépôt -->
-![Lignes de code](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/v3nel/dc8aa89871a1c0778285a89a41c26fb9/raw/evalio-loc.json&label="Lines)
+![Lignes de code](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/v3nel/dc8aa89871a1c0778285a89a41c26fb9/raw/evalio-loc.json&label=Lines)
 ![Taille du dépôt](https://img.shields.io/github/repo-size/v3nel/evalio?color=E7314B)
 ![Langages](https://img.shields.io/github/languages/count/v3nel/evalio?color=4BC2BC)
 ![Langage principal](https://img.shields.io/github/languages/top/v3nel/evalio)
