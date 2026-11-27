@@ -135,11 +135,17 @@ L'API écoute sur `http://localhost:8080`. Pour vérifier qu'elle tourne : `http
 
 ```bash
 cd frontend
-bun install
-bun run dev
+npm install          # ou bun install
+npm run dev
 ```
 
-L'application est disponible sur `http://localhost:5173`.
+L'application est disponible sur `http://localhost:5173`. Par défaut elle utilise des **données mock** (maquettes Figma, sans backend). Pour interroger l'API Spring :
+
+```bash
+VITE_USE_MOCK=false npm run dev
+```
+
+Le proxy Vite envoie `/api` vers `http://localhost:8080`. Détail des routes, du client typé et des contrats API : [`frontend/README.md`](frontend/README.md).
 
 ## Scripts utiles
 
@@ -148,10 +154,9 @@ L'application est disponible sur `http://localhost:5173`.
 | `docker compose up -d` | Lance PostgreSQL |
 | `./mvnw spring-boot:run` | Lance l'API |
 | `./mvnw verify` | Tests backend (dont Testcontainers) |
-| `bun run dev` | Serveur de dev du frontend |
-| `bun run build` | Build de production du frontend |
-| `bun run lint` | ESLint |
-| `bun run test` | Tests frontend |
+| `npm run dev` / `bun run dev` | Serveur de dev du frontend |
+| `npm run build` / `bun run build` | Build de production du frontend |
+| `npm run lint` / `bun run lint` | ESLint |
 
 ## Tests
 
