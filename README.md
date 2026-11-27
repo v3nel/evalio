@@ -43,6 +43,7 @@ Plateforme web de consultation des notes pour les étudiants du BUT Informatique
 - [Stack technique](#stack-technique)
 - [Architecture du monorepo](#architecture-du-monorepo)
 - [Démarrage rapide](#démarrage-rapide)
+- [Feature flags (ConfigCat)](#feature-flags-configcat)
 - [Scripts utiles](#scripts-utiles)
 - [Tests](#tests)
 - [CI/CD](#cicd)
@@ -69,6 +70,7 @@ Plateforme web de consultation des notes pour les étudiants du BUT Informatique
 | **Backend** | Java 25, Spring Boot 4.2 (Web, Data JPA, Security, Validation, Actuator), Flyway |
 | **Base de données** | PostgreSQL (Docker en local) |
 | **Frontend** | React, Vite, TypeScript, React Router, TanStack Query, Tailwind CSS, shadcn/ui, Recharts |
+| **Feature flags** | ConfigCat (SDK Java, évaluation côté backend) |
 | **Qualité** | JUnit 5, Testcontainers, ESLint, Vitest |
 | **CI/CD** | GitHub Actions (workflows filtrés par `paths`) |
 
@@ -146,6 +148,32 @@ VITE_USE_MOCK=false npm run dev
 ```
 
 Le proxy Vite envoie `/api` vers `http://localhost:8080`. Détail des routes, du client typé et des contrats API : [`frontend/README.md`](frontend/README.md).
+
+## Feature flags (ConfigCat)
+
+Les flags sont évalués **uniquement côté backend** (SDK Java). Le navigateur n'embarque pas ConfigCat : il lit les flags d'interface via `GET /api/me/features`, qui renvoie un objet `{ [clé]: boolean }`. Les flags qui touchent aux données ou aux droits ne sont pas dans cette réponse.
+
+| Variable | Défaut | Rôle |
+| --- | --- | --- |
+| `CONFIGCAT_SDK_KEY` | vide | Clé SDK. Absente ou vide : mode local, aucun appel réseau. Jamais commitée. |
+| `configcat.poll-interval-seconds` | `60` | Intervalle du polling automatique quand la clé est définie. |
+
+En mode local, les valeurs viennent de `backend/src/main/resources/application.properties` (`evalio.feature-flags.defaults[...]`), avec repli sur le défaut déclaré dans l'enum `FeatureFlag`.
+
+| Clé | Où | Défaut | Effet |
+| --- | --- | --- | --- |
+| `beta-promotion-comparison` | UI | `false` | Affiche l'écart avec la promotion sur le détail d'une ressource. Masqué par défaut. |
+| `grades-export` | Serveur | `false` | Réservé à un export des notes. N'est pas envoyé au front. |
+
+Ajouter un flag :
+
+1. Déclarer la clé, le défaut et `exposedToUi` dans `backend/src/main/java/fr/evalio/backend/featureflags/FeatureFlag.java`.
+2. Côté serveur, appeler `featureFlags.isEnabled(FeatureFlag.MA_CLE)`. Un flag métier reste `exposedToUi = false`.
+3. Pour un flag d'UI, le lire dans le front avec `useFeatureFlag('ma-cle', false)` (défaut identique). La clé part au navigateur via `GET /api/me/features`.
+4. Créer la même clé dans le dashboard ConfigCat pour le pilotage distant.
+5. En local sans clé, depuis `backend/` : `./gradlew bootRun --args='--evalio.feature-flags.defaults[ma-cle]=true'`.
+
+Le User ConfigCat est construit à partir de l'utilisateur authentifié (identifiant, courriel s'il est dans le login, rôles). Sans session, le flag est évalué sans ciblage.
 
 ## Scripts utiles
 

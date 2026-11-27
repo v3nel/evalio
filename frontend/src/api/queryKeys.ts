@@ -1,5 +1,6 @@
 export const queryKeys = {
   me: ['me'] as const,
+  features: ['me', 'features'] as const,
   settings: ['settings'] as const,
   semesters: ['semesters'] as const,
   dashboard: (semesterId: string) => ['dashboard', semesterId] as const,
