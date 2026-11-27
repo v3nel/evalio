@@ -44,38 +44,38 @@
   color-scheme: light;
   --ink: #20242c;
   --muted: #616975;
-  --brand: #234b8a;
+  --brand: #ce2c43;
   --ent: #ce2c43;
   --canvas: #f6f7f9;
   --surface: #ffffff;
   --line: #e4e7ec;
-  --nav: #edf2fa;
+  --nav: #fbecef;
   --good: #24704d;
   --good-soft: #edf6f0;
   --warn: #925d12;
   --warn-soft: #fbf3e5;
   --bad: #af3939;
   --bad-soft: #fbefef;
-  --brand-soft: #edf2fa;
+  --brand-soft: #fbecef;
 }
 
 .dark {
   color-scheme: dark;
   --ink: #f3f4f6;
   --muted: #9aa3b2;
-  --brand: #8ab0e8;
+  --brand: #e7314b;
   --ent: #e7314b;
   --canvas: #1b2230;
   --surface: #141b26;
   --line: #2c3545;
-  --nav: #243044;
+  --nav: #311d26;
   --good: #6dcaa0;
   --good-soft: #1c3a2e;
   --warn: #e0b36a;
   --warn-soft: #3a2e1a;
   --bad: #e08a8a;
   --bad-soft: #3a2224;
-  --brand-soft: #243044;
+  --brand-soft: #311d26;
 }
 
 @layer base {

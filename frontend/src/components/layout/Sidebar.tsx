@@ -1,6 +1,7 @@
-import { NavLink, useLocation } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import type { StudentProfile } from '@/api/types.ts'
 import { Icon, type IconName } from '@/components/Icon.tsx'
+import { Logo } from '@/components/Logo.tsx'
 import { cn } from '@/lib/utils.ts'
 
 const links: {
@@ -41,12 +42,14 @@ export function Sidebar({ student, className }: SidebarProps) {
         className,
       )}
     >
-      <div className="flex flex-col gap-2">
-        <p className="text-[26px] font-bold leading-[38px] text-brand">Evalio</p>
-        <p className="text-xs font-medium leading-[17px] text-muted">{student.formation}</p>
+      <div className="flex shrink-0 flex-col items-start gap-2">
+        <Link to="/" aria-label="Evalio — Tableau de bord">
+          <Logo className="h-8" />
+        </Link>
+        <p className="text-xs font-medium leading-4.25 text-muted">{student.formation}</p>
       </div>
 
-      <nav className="flex flex-col gap-2">
+      <nav className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
         {links.map((link) => (
           <NavLink
             key={link.to}
@@ -56,7 +59,7 @@ export function Sidebar({ student, className }: SidebarProps) {
             className={({ isActive }) => {
               const active = link.match ? link.match(location.pathname) : isActive
               return cn(
-                'flex h-11 items-center gap-3 rounded-lg p-3 text-[13px] leading-[19px]',
+                'flex h-11 shrink-0 items-center gap-3 rounded-lg p-3 text-[13px] leading-4.75',
                 active
                   ? 'bg-nav font-semibold text-brand'
                   : 'font-medium text-muted hover:bg-white/60 dark:hover:bg-white/5',
@@ -76,7 +79,7 @@ export function Sidebar({ student, className }: SidebarProps) {
         ))}
       </nav>
 
-      <div className="mt-auto flex flex-col gap-1">
+      <div className="mt-auto flex shrink-0 flex-col gap-1">
         <p className="text-sm font-semibold leading-5 text-ink">
           {student.firstName} {student.lastName}
         </p>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import { api, USE_MOCK } from '@/api/index.ts'
+import { Logo } from '@/components/Logo.tsx'
 import { useMe } from '@/hooks/useMe.ts'
 import { cn } from '@/lib/utils.ts'
 
@@ -34,7 +35,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-svh flex-col bg-white px-12 py-10 dark:bg-surface">
       <header className="flex items-center gap-4">
-        <p className="text-[26px] font-bold leading-[38px] text-brand">Evalio</p>
+        <Logo className="h-9" />
         <div className="flex-1" />
         <p className="text-[13px] font-medium leading-[19px] text-muted">IUT Montpellier-Sète</p>
       </header>

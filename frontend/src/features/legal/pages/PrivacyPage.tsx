@@ -1,11 +1,12 @@
 import { Link } from 'react-router'
+import { Logo } from '@/components/Logo.tsx'
 
 export default function PrivacyPage() {
   return (
     <div className="flex min-h-svh flex-col bg-white px-12 py-10 dark:bg-surface">
       <header className="flex items-center">
-        <Link to="/connexion" className="text-[26px] font-bold leading-[38px] text-brand">
-          Evalio
+        <Link to="/connexion" aria-label="Evalio — Connexion">
+          <Logo className="h-9" />
         </Link>
         <div className="flex-1" />
         <p className="text-[13px] font-medium text-muted">IUT Montpellier-Sète</p>

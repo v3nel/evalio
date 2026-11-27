@@ -26,8 +26,8 @@ export function AppLayout() {
   return (
     <SemesterContext.Provider value={value}>
       <div className="flex min-h-svh bg-surface">
-        <div className="hidden lg:block">
-          <Sidebar student={me.data} className="sticky top-0 min-h-svh" />
+        <div className="hidden shrink-0 bg-canvas lg:block">
+          <Sidebar student={me.data} className="sticky top-0 h-dvh" />
         </div>
         {mobileOpen ? (
           <div className="fixed inset-0 z-30 lg:hidden">
