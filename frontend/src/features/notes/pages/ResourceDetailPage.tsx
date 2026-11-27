@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router'
+import { featureFlagKeys } from '@/api/featureFlags.ts'
 import type { Evaluation, GradeStatus } from '@/api/types.ts'
 import { isNotFound } from '@/api/errors.ts'
 import { ContentSkeleton } from '@/components/feedback/PageSkeleton.tsx'
@@ -7,6 +8,7 @@ import { ErrorState } from '@/components/feedback/ErrorState.tsx'
 import { Note } from '@/components/Note.tsx'
 import { Statut } from '@/components/Statut.tsx'
 import NotFoundPage from '@/features/errors/pages/NotFoundPage.tsx'
+import { useFeatureFlag } from '@/hooks/useFeatureFlag.ts'
 import { useModule } from '@/hooks/useGrades.ts'
 import { useSemester } from '@/hooks/useSemester.ts'
 import { formatDayMonthYear, formatGrade } from '@/lib/format.ts'
@@ -29,6 +31,31 @@ const filters: { id: Filter; label: string }[] = [
   { id: 'ABJ', label: 'Absence justifiée' },
   { id: 'ATT', label: 'En attente' },
 ]
+
+function promotionGapLabel(gap: number): string {
+  if (Math.abs(gap) < 0.005) return 'Au niveau de la promotion'
+  const formatted = formatGrade(Math.abs(gap))
+  return gap > 0 ? `${formatted} au-dessus de la promotion` : `${formatted} sous la promotion`
+}
+
+function PromotionGap({
+  average,
+  promotionAverage,
+}: {
+  average: number | null
+  promotionAverage: number | null
+}) {
+  const enabled = useFeatureFlag(featureFlagKeys.betaPromotionComparison, false)
+  if (!enabled || average == null || promotionAverage == null) return null
+  return (
+    <p className="text-[11px] leading-4 text-muted">
+      <span className="mr-2 inline-flex items-center rounded-lg bg-brand-soft px-2 py-1 font-medium text-brand">
+        Bêta
+      </span>{' '}
+      {promotionGapLabel(average - promotionAverage)}
+    </p>
+  )
+}
 
 function statusKind(evaluation: Evaluation) {
   if (evaluation.grade.status === 'ABS') return 'absent' as const
@@ -105,6 +132,8 @@ export default function ResourceDetailPage() {
           </p>
         </div>
       </section>
+
+      <PromotionGap average={module.average} promotionAverage={module.promotionAverage} />
 
       <section className="flex flex-col gap-4 rounded-lg border border-line bg-surface p-6">
         <div className="flex items-center">

@@ -4,6 +4,7 @@ import type { ApiContract } from '@/api/types.ts'
 
 export const httpApi: ApiContract = {
   getMe: () => http.get('/api/me'),
+  getFeatures: () => http.get('/api/me/features'),
   async loginWithCas() {
     window.location.assign(casLoginUrl('/'))
     return { redirectTo: casLoginUrl('/') }

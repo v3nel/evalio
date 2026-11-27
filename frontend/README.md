@@ -42,6 +42,10 @@ VITE_USE_MOCK=false npm run dev
 
 Le bouton « Se connecter avec l’ENT » redirige alors vers `/api/auth/cas/login`.
 
+## Feature flags
+
+Le front ne charge pas le SDK ConfigCat. `useFeatureFlag(key, defaultValue)` lit `GET /api/me/features` (TanStack Query, clé `['me', 'features']`). En mode mock, `MOCK_FEATURES` dans `src/api/mock/data.ts` renvoie les mêmes défauts que le backend (`beta-promotion-comparison` à `false`) : le détail d'une ressource ne change pas. Passer cette valeur à `true` affiche l'écart avec la promotion.
+
 ## Routes (maquettes)
 
 | Route | Frame Figma |

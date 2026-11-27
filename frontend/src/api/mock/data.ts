@@ -1,6 +1,8 @@
+import { featureFlagKeys } from '@/api/featureFlags.ts'
 import type {
   Dashboard,
   Evaluation,
+  FeatureFlagMap,
   ModuleDetail,
   ModuleSummary,
   RecentGrade,
@@ -47,6 +49,11 @@ export const MOCK_SEMESTERS: Semester[] = [
 export const MOCK_SETTINGS: UserSettings = {
   theme: 'light',
   notifyOnNewGrade: true,
+}
+
+/** Défauts alignés sur le backend : la bêta reste masquée. */
+export const MOCK_FEATURES: FeatureFlagMap = {
+  [featureFlagKeys.betaPromotionComparison]: false,
 }
 
 const r103Evals: Evaluation[] = [

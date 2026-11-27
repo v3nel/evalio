@@ -158,8 +158,12 @@ export interface SearchHit {
   title: string
 }
 
+/** Flags d'interface renvoyés par GET /api/me/features. Les flags métier restent côté serveur. */
+export type FeatureFlagMap = Record<string, boolean>
+
 export interface ApiContract {
   getMe: () => Promise<StudentProfile>
+  getFeatures: () => Promise<FeatureFlagMap>
   loginWithCas: () => Promise<{ redirectTo: string }>
   logout: () => Promise<void>
   getSettings: () => Promise<UserSettings>

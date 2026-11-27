@@ -6,6 +6,7 @@ import {
   getUeDetail,
   listModuleSummaries,
   listUeSummaries,
+  MOCK_FEATURES,
   MOCK_SEMESTERS,
   MOCK_SETTINGS,
   MOCK_STUDENT,
@@ -32,6 +33,12 @@ export const mockApi: ApiContract = {
     await delay(160)
     requireAuth()
     return MOCK_STUDENT
+  },
+
+  async getFeatures() {
+    await delay(80)
+    requireAuth()
+    return { ...MOCK_FEATURES }
   },
 
   async loginWithCas() {
