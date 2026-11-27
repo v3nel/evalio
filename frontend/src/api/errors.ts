@@ -1,0 +1,19 @@
+export class ApiError extends Error {
+  readonly status: number
+  readonly code: string
+
+  constructor(status: number, message: string, code = 'API_ERROR') {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+    this.code = code
+  }
+}
+
+export function isUnauthorized(error: unknown): boolean {
+  return error instanceof ApiError && error.status === 401
+}
+
+export function isNotFound(error: unknown): boolean {
+  return error instanceof ApiError && error.status === 404
+}

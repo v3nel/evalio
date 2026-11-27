@@ -1,17 +1,100 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-ent: var(--ent);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-nav: var(--nav);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-brand-soft: var(--brand-soft);
+  --color-background: var(--surface);
+  --color-foreground: var(--ink);
+  --color-primary: var(--brand);
+  --color-primary-foreground: #ffffff;
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--brand);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--canvas);
+  --color-accent-foreground: var(--ink);
+  --color-secondary: var(--canvas);
+  --color-secondary-foreground: var(--ink);
+  --color-destructive: var(--bad);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.5rem;
+}
+
+:root {
+  color-scheme: light;
+  --ink: #20242c;
+  --muted: #616975;
+  --brand: #234b8a;
+  --ent: #ce2c43;
+  --canvas: #f6f7f9;
+  --surface: #ffffff;
+  --line: #e4e7ec;
+  --nav: #edf2fa;
+  --good: #24704d;
+  --good-soft: #edf6f0;
+  --warn: #925d12;
+  --warn-soft: #fbf3e5;
+  --bad: #af3939;
+  --bad-soft: #fbefef;
+  --brand-soft: #edf2fa;
+}
+
+.dark {
+  color-scheme: dark;
+  --ink: #f3f4f6;
+  --muted: #9aa3b2;
+  --brand: #8ab0e8;
+  --ent: #e7314b;
+  --canvas: #1b2230;
+  --surface: #141b26;
+  --line: #2c3545;
+  --nav: #243044;
+  --good: #6dcaa0;
+  --good-soft: #1c3a2e;
+  --warn: #e0b36a;
+  --warn-soft: #3a2e1a;
+  --bad: #e08a8a;
+  --bad-soft: #3a2224;
+  --brand-soft: #243044;
+}
+
 @layer base {
-  :root {
-    color-scheme: light;
+  * {
+    @apply border-line;
   }
 
-  .dark {
-    color-scheme: dark;
+  html {
+    @apply font-sans;
   }
 
   body {
-    @apply bg-white text-neutral-950 transition-colors duration-200 dark:bg-[#141B26] dark:text-neutral-100;
+    @apply bg-surface text-ink antialiased;
+  }
+
+  button,
+  a,
+  input,
+  select {
+    @apply outline-none;
   }
 }
